@@ -20,5 +20,6 @@ from boards import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('boards.url')),
+    path('', include('accounts.url')),
 
 ]
