@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'boards',
     'accounts',
+    'import_export',
 ]
 
 MIDDLEWARE = [

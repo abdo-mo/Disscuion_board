@@ -16,7 +16,7 @@
         <div class="card">
           <div class="card-body">
             <h3 class="card-title">Sign up</h3>
-            <form method="post" novalidate>
+            <form method="post" novalidate data-validate-username-url="{% url 'validate_username' %}">
               {% csrf_token %}
               {% include 'includes/form.html' %}
               <button type="submit" class="btn btn-primary btn-block">Create an account</button>
@@ -29,4 +29,23 @@
       </div>
     </div>
   </div>
+{% endblock %}
+
+{% block javascript %}
+<script> 
+  $("#id_username").change(function(){
+    var username =$(this).val();
+    var form = $(this).closest("form");
+    $.ajax({
+      url:form.attr("data-validate-username-url"),
+      data:form.serialize(),
+      dataType:'json',
+      success: function(data){
+        if(data.is_taken){
+          alert(data.error_message);
+        }
+      }
+    });
+  });
+</script>
 {% endblock %}

@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{%block title%} Topic {%endblock%}
+{% block breadcrumb %}
+
+   <li class="breadcrumb-item "><a href="{% url 'home' %}">Board</a></li>
+        <li class="breadcrumb-item active">{{topic.board.name}}</li>
+{%endblock%}
+
+
+{% block content %}
+
+{% if searched %}
+
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th>Topic</th>
+            <th>Created by</th>
+            <th>Created date</th>
+        </tr>
+        </thead>
+        <tbody> 
+        {% for topic in topics %}
+        <tr>
+            <td><a href="{% url 'topic_posts' topic.board.pk topic.pk %}">{{ topic.subject}}</a></td>
+            <td>{{ topic.created_by.username}}</td>
+            <td>{{ topic.created_date}}</td>
+
+        </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+    {% if topics.has_other_pages %}
+    <nav aria-label="Topics pagination" class="mb-4">
+        <ul class="pagination">
+        {% if topics.has_previous %}
+            <li class="page-item">
+            <a class="page-link" href="?page={{ topics.previous_page_number }}">Previous</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+            <span class="page-link">Previous</span>
+            </li>
+        {% endif %}
+
+        {% for page_num in topics.paginator.page_range %}
+            {% if topics.number == page_num %}
+            <li class="page-item active">
+                <span class="page-link">
+                {{ page_num }}
+                <span class="sr-only">(current)</span>
+                </span>
+            </li>
+            {% else %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+            </li>
+            {% endif %}
+        {% endfor %}
+
+        {% if topics.has_next %}
+            <li class="page-item">
+            <a class="page-link" href="?page={{ topics.next_page_number }}">Next</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+            <span class="page-link">Next</span>
+            </li>
+        {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+{% else %}
+<h1>THIS USER HAS NO TOPICS</h1>
+
+{% endif %}
+{% endblock %}
