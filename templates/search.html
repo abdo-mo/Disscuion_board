@@ -2,14 +2,14 @@
 {%block title%} Topic {%endblock%}
 {% block breadcrumb %}
 
-   <li class="breadcrumb-item "><a href="{% url 'home' %}">Board</a></li>
-        <li class="breadcrumb-item active">{{topic.board.name}}</li>
-{%endblock%}
+   <li class="breadcrumb-item "><a href="{% url 'board_search' %}">Board</a></li>
+   <li class="breadcrumb-item active ">Tooics</li>
+   <li class="breadcrumb-item "><a href="{% url 'user_search' %}">Users</a></li>
+
+   {%endblock%}
 
 
 {% block content %}
-
-{% if searched %}
 
     <table class="table">
         <thead class="thead-dark">
@@ -72,8 +72,4 @@
         </ul>
     </nav>
     {% endif %}
-{% else %}
-<h1>THIS USER HAS NO TOPICS</h1>
-
-{% endif %}
 {% endblock %}

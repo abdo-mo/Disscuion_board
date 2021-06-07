@@ -10,21 +10,36 @@ from django.views.generic import UpdateView, ListView
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+import requests
 
 
 
-# Create your views here.
-# def home(request):
-#     boards = Board.objects.all()
-#     return render(request, 'home.html', {'boards':boards})
 
-class HomeListView(ListView):
-    model = Board
-    context_object_name = 'boards'
-    template_name = 'home.html'
+#Create your views here.
+def home(request):
+    boards = Board.objects.all()
+    api_url = 'http://api.openweathermap.org./data/2.5/weather?appid=0c42f7f6b53b244c78a418f4f181282a&q='
+    city_name = 'cairo'
+    url = api_url + city_name
+    response = requests.get(url)
+    content = response.json()
+    city_weather = {
+        'city':city_name,
+        'temperature':content['main']['temp'],
+        'description':content['weather'][0]['description'],
+        'icon':content['weather'][0]['description']
+    }
+    print('city', city_weather['description'])
+    return render(request,'home.html' ,{'boards':boards, 'city_weather':city_weather})
 
-def about(request):
-    return HttpResponse(request,'yes')
+
+
+# class HomeListView(ListView):
+#     model = Board
+#     context_object_name = 'boards'
+#     template_name = 'home.html'
+
+    
 
 def board_topics(request, board_id):
     board = get_object_or_404(Board, pk = board_id)
@@ -109,8 +124,38 @@ class PostUpdateView(UpdateView):
 
 def search_view(request):
     if request.method == "POST":
-        searched = request.POST['search']
-        topics = Topic.objects.filter(created_by__username__contains=searched)
+        searched = request.POST.get('search')
+        request.session['search'] = searched
+        topics = Topic.objects.filter(subject__icontains=searched)
         return render(request, 'search.html',{'searched':searched, 'topics':topics})
     else:
-        return render(request, 'search.html')
+        searched = request.session['search']
+        topics = Topic.objects.filter(subject__icontains=searched)
+        return render(request, 'search.html',{'searched':searched, 'topics':topics})
+def searchBoard_view(request):
+    if request.method == "GET":
+        searched = request.session['search']
+        boards = Board.objects.filter(name__icontains=searched)
+        return render(request, 'board_search.html',{'searched':searched, 'boards':boards})
+    else:
+        return render(request, 'board_search.html')
+
+def searchUser_view(request):
+    if request.method == "GET":
+        searched = request.session['search']
+        users = User.objects.filter(username__icontains=searched)
+        return render(request, 'user_search.html',{'searched':searched, 'users':users})
+    else:
+        return render(request, 'user_search.html')
+
+
+
+class searchUserTopic_view(ListView):
+    model = Topic    
+    template_name = 'user_search_topic.html'
+    context_object_name = 'topics'
+    paginate_by = 10
+
+    def get_queryset(self):
+        user = get_object_or_404(User, username = self.kwargs.get('username'))
+        return Topic.objects.filter(created_by = user)

@@ -1,31 +1,11 @@
 {% extends 'base.html' %}
 {% block title %} Boards {% endblock %}
-        {% block breadcrumb %}
-            <li class = "breadcrumb active">Boards</li>
-        {% endblock %}
-        {% block content %}
-        <section class="section">
-            <div class="container">
-                <div class="columns">
-                    <div class="column is-offset-4 is-4">
-                        <div class="box">
-                            <article class="media">
-                                <div class="media-content">
-                                    <div class="content">
-                                        <p>
-                                            <span class="title h2">{{ city_weather.city }}</span>
-                                            <br>
-                                            <span class="subtitle">{{ city_weather.temperature }}° F</span>
-                                            <br> {{ city_weather.description }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+    {% block breadcrumb %}
+        <li class="breadcrumb-item active ">Boards</li>
+        <li class="breadcrumb-item "><a href="{% url 'result' %}">Topics</a></li>
+        <li class="breadcrumb-item "><a href="{% url 'user_search' %}">Users</a></li>
+    {% endblock %}
+    {% block content %}
         <table class = "table">
             <thead class = "thead-dark">
                 <tr>
@@ -36,7 +16,6 @@
                 </tr>
             </thead>
             <tbody>
-
                 {% for board in boards %}
                 <tr>
                     <td><a href="{% url 'board_topics' board.pk %}">{{board.name}}</a>

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %} Boards {% endblock %}
+    {% block breadcrumb %}
+        <li class="breadcrumb-item "><a href="{% url 'board_search' %}">Boards</a></li>
+        <li class="breadcrumb-item "><a href="{% url 'result' %}">Topics</a></li>
+        <li class="breadcrumb-item active ">Users</li>
+
+        {% endblock %}
+    {% block content %}
+        <table class = "table">
+            <thead class = "thead-dark">
+                <tr>
+                    <th>User Name</th>
+                    <th>Last Name</th>
+                    <th>Topic</th>
+                    <th>Country</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td><a href="{% url 'user_search_topics' user.username %}">{{user.username}}</a>
+                    <td>{{user.last_name}}</td>
+                    <td>{{user.topics.count}}</td>
+                    <td></td>
+                </tr>
+            </tbody>
+            {% endfor %}
+        </table>           
+    </div>
+    {% endblock %}
+</body>
+</html>

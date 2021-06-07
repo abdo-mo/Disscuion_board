@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{%block title%}{{board.name}} {%endblock%}
+{% block breadcrumb %}
+
+   <li class="breadcrumb-item "><a href="{% url 'home' %}">Boards</a></li>
+        <li class="breadcrumb-item active">Topics By {{view.kwargs.username}}</li>
+{%endblock%}
+
+
+{% block content %}
+
+<table class="table">
+    <thead class="thead-dark">
+    <tr>
+        <th>Topic</th>
+        <th>Created by</th>
+        <th>Posts</th>
+        <th>Views</th>
+        <th>Created date</th>
+    </tr>
+    </thead>
+    <tbody> 
+    {% for topic in topics %}
+    <tr>
+        <td><a href="{% url 'topic_posts' topic.board.pk topic.pk %}">{{ topic.subject}}</a></td>
+        <td>{{ topic.created_by.username}}</td>
+        <td>{{topic.comments}}</td>
+        <td>{{topic.views}}</td>
+        <td>{{ topic.created_date}}</td>
+
+    </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+
+{% if is_paginated %}
+
+        {% if page_obj.has_previous %}
+            <a class = "btn btn-outline-info mb-4" href="?page=1">First</a>
+            <a class = "btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>  
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <a class = "btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+            {% elif num > page_obj.number|add:'-4' and num < page_obj.number|add:'4' %}
+                <a class = "btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a class = "btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+            <a class = "btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>  
+        {% endif %}
+
+
+    {% endif %}
+{% endblock %}
