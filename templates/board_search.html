@@ -6,7 +6,7 @@
         <li class="breadcrumb-item "><a href="{% url 'user_search' %}">Users</a></li>
     {% endblock %}
     {% block content %}
-        <table class = "table">
+        <table class = "table table-dark">
             <thead class = "thead-dark">
                 <tr>
                     <th>Board</th>
@@ -19,13 +19,13 @@
                 {% for board in boards %}
                 <tr>
                     <td><a href="{% url 'board_topics' board.pk %}">{{board.name}}</a>
-                    <small class = "text-muted d-block">{{board.description}}</small></td>
+                    <small class = "d-block">{{board.description}}</small></td>
                     <td>{{board.get_posts_count}}</td>
                     <td>{{board.topics.count}}</td>
                     <td>
                         {% with post=board.get_last_post %}
                             {% if post %}
-                                by {{post.created_by.username}} at {{post.created_date}}
+                                by <a class = "ml-2 mr-2" href="{% url 'user_search_topics' user.username %}"> {{post.created_by.username}}</a> at {{post.created_date}}
                             {% else %}
                                 <small>No Post</small>
                             {% endif %}

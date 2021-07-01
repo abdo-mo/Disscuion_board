@@ -10,5 +10,5 @@ urlpatterns = [
     path('settings/change_password/', auth_views.PasswordChangeView.as_view(template_name = "change_password.html"), name = 'password_change'),
     path('settings/change_password/done/', auth_views.PasswordChangeDoneView.as_view(template_name = "change_password_done.html"), name = 'password_change_done'),
     path('signup/ajax/validate_username/', views.validate_username, name = 'validate_username'),
-    path('acount/', views.UserUpdateView.as_view(), name = "my_acount"),
+    path('acount/', views.profile, name = "my_acount"),
 ]

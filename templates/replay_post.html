@@ -13,7 +13,7 @@
 
 
 {% block content %}
-<form method="POST" class = mb-4>
+<form method="POST" class = "mb-4">
  {% csrf_token %}
  {% include 'includes/form.html' %}
  <button type="submit" class="btn btn-success">Post the replay</button>
@@ -30,8 +30,10 @@
         <small class="text-muted">{{ post.created_date }}</small>
       </div>
     </div>
-    {{ post.message }}
-</div>
+    <div class="text-light mt-2">
+      {{ post.message }}
+    </div>
+  </div>
 {% endfor %}
 
 {% endblock %}

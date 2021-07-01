@@ -1,0 +1,19 @@
+.navbar-defualt{
+    background-color:#031d2d;
+    border-color:#031d2d;
+    font-weight:bold;
+}
+.navbar-brand{
+    font-size:50px;
+    font-family: 'Peralta', cursive;
+}
+body{
+    background-color: #05273b;
+}
+.breadcrumb-defualt{
+    font-weight:bold;
+
+}
+.base-table{
+    border-color:#ccc
+}

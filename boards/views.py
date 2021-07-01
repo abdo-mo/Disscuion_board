@@ -16,28 +16,12 @@ import requests
 
 
 #Create your views here.
-def home(request):
-    boards = Board.objects.all()
-    api_url = 'http://api.openweathermap.org./data/2.5/weather?appid=0c42f7f6b53b244c78a418f4f181282a&q='
-    city_name = 'cairo'
-    url = api_url + city_name
-    response = requests.get(url)
-    content = response.json()
-    city_weather = {
-        'city':city_name,
-        'temperature':content['main']['temp'],
-        'description':content['weather'][0]['description'],
-        'icon':content['weather'][0]['description']
-    }
-    print('city', city_weather['description'])
-    return render(request,'home.html' ,{'boards':boards, 'city_weather':city_weather})
 
 
-
-# class HomeListView(ListView):
-#     model = Board
-#     context_object_name = 'boards'
-#     template_name = 'home.html'
+class HomeListView(ListView):
+    model = Board
+    context_object_name = 'boards'
+    template_name = 'home.html'
 
     
 
@@ -76,7 +60,8 @@ def new_topic(request, board_id):
     return render(request, 'new_topic.html', {'board':board, 'form':form})
 
 def topic_posts(request, board_id, topic_id):
-    topic = get_object_or_404(Topic, board__pk=board_id, pk = topic_id)  
+    topic = get_object_or_404(Topic, board__pk=board_id, pk = topic_id)
+    posts = topic.posts.all().order_by('-created_date')
     session_num = 'view_topic_{}'.format(topic.pk)
     if not request.session.get(session_num, False):
         topic.views += 1
@@ -84,7 +69,7 @@ def topic_posts(request, board_id, topic_id):
         request.session[session_num] = True
     
 
-    return render(request, 'topic_posts.html', {'topic':topic})
+    return render(request, 'topic_posts.html', {'topic':topic, 'posts':posts})
 @login_required
 def replay_post(request, board_id, topic_id):
     topic = get_object_or_404(Topic, board__pk=board_id, pk = topic_id)

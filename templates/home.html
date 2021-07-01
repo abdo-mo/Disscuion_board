@@ -1,33 +1,11 @@
 {% extends 'base.html' %}
 {% block title %} Boards {% endblock %}
         {% block breadcrumb %}
-            <li class = "breadcrumb active">Boards</li>
+            <li class = "breadcrumb-item active">Boards</li>
         {% endblock %}
         {% block content %}
-        <section class="section">
-            <div class="container">
-                <div class="columns">
-                    <div class="column is-offset-4 is-4">
-                        <div class="box">
-                            <article class="media">
-                                <div class="media-content">
-                                    <div class="content">
-                                        <p>
-                                            <span class="title h2">{{ city_weather.city }}</span>
-                                            <br>
-                                            <span class="subtitle">{{ city_weather.temperature }}° F</span>
-                                            <br> {{ city_weather.description }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <table class = "table">
-            <thead class = "thead-dark">
+        <table class = "table table-dark" style="border-color:#ccc;">
+            <thead class = "thead-light">
                 <tr>
                     <th>Board</th>
                     <th>Posts</th>
@@ -40,13 +18,13 @@
                 {% for board in boards %}
                 <tr>
                     <td><a href="{% url 'board_topics' board.pk %}">{{board.name}}</a>
-                    <small class = "text-muted d-block">{{board.description}}</small></td>
+                    <small class = "d-block">{{board.description}}</small></td>
                     <td>{{board.get_posts_count}}</td>
                     <td>{{board.topics.count}}</td>
                     <td>
                         {% with post=board.get_last_post %}
                             {% if post %}
-                                by {{post.created_by.username}} at {{post.created_date}}
+                                by <a class = "ml-2 mr-2" href="{% url 'user_search_topics' post.created_by %}"> {{post.created_by.username}}</a> at {{post.created_date}}
                             {% else %}
                                 <small>No Post</small>
                             {% endif %}

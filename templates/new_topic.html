@@ -9,9 +9,11 @@
 {% endblock %}
 
 {% block content %}
-  <form method="post" novalidate>
-    {% csrf_token %}
-    {% include 'includes/form.html' %}
-    <button type="submit" class="btn btn-success">Add</button>
-  </form>
+  <div class="containter p-5 bg-light">
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% include 'includes/form.html' %}
+      <button type="submit" class="btn btn-success mt-3">Add</button>
+    </form>
+  </div>
 {% endblock %}
